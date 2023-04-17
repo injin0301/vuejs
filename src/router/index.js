@@ -4,6 +4,7 @@ import Home from "../views/Home.vue";
 import Menu from "../views/Menu.vue";
 import MatchingCard from "../views/MatchingCard";
 import WordCard from "../views/WordCard";
+import WordCardTest from "../views/WordCardTest";
 
 const routes = [
   {
@@ -28,6 +29,12 @@ const routes = [
     path: "/word-card",
     name: "word-card",
     component: WordCard,
+  },
+
+  {
+    path: "/word-card-test",
+    name: "word-card-test",
+    component: WordCardTest,
   },
 ];
 

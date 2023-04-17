@@ -19,6 +19,10 @@
       <button class="menuone" @click="$router.push('/word-card')">
         Memory word Card
       </button>
+
+      <button class="menuone" @click="$router.push('/word-card-test')">
+        Memory word Card Test
+      </button>
     </div>
   </div>
 </template>
