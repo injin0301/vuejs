@@ -38,14 +38,10 @@
 
     <div class="success" v-if="isSuccessVisible">
       <p>{{ message }}</p>
-
-      <button @click="continuegame()">CONTINUE</button>
     </div>
 
     <div class="fail" v-if="isFailVisible">
       <p>{{ message }}</p>
-
-      <button @click="continuegame()">SKIP</button>
     </div>
 
     <div class="endGame" v-if="isEndGameVisible">
@@ -109,7 +105,7 @@ export default {
         },
 
       progress: 0,
-      currentQuestion: 0,
+      pourcentage: 0,
       message: "",
       isSuccessVisible: false,
       isFailVisible: false,
@@ -122,12 +118,7 @@ export default {
     onChange:function(){
        console.log(this.myCategory);
        this.index = 0;
-    },
-
-    changeIndex(i) {
-      this.index = i;
-      console.log(i);
-      console.log(this.index);
+       this.resetProgress();
     },
 
     checkAnswer(answer) {
@@ -136,6 +127,7 @@ export default {
       if(this.index + 1 < this.gameDataTest[this.myCategory].length && this.gameDataTest[this.myCategory][this.index].solution == answer) {
         this.message = "Great !";
         this.isSuccessVisible = true;
+        this.makeProgress();
 
         // Attendre 1,5s
         setTimeout(() => {
@@ -150,6 +142,7 @@ export default {
       } else if(this.index + 1 >= this.gameDataTest[this.myCategory].length) { // Si dernière question
         this.message = "Great !";
         this.isSuccessVisible = true;
+        this.makeProgress();
         setTimeout(() => {
           this.isSuccessVisible = false;
           this.isFailVisible = false;
@@ -157,6 +150,7 @@ export default {
           setTimeout(() => {
             this.isEndGameVisible = false;
             this.index = 0;
+            this.resetProgress();
           }, 2500);
         }, 1500);
 
@@ -184,29 +178,23 @@ export default {
       */
       // DEBUG
 
-
-
-      // if (this.gameDataTest[this.myCategory].length - this.index + 1 == this.gameDataTest[this.myCategory].length) {
-      //   this.isEndGameVisible = true;
-      //   this.isSuccessVisible = false;
-      //   this.isFailVisible = false;
-      // }
     },
   
 
     // Ne progresse pas selon le nombre de questions
     makeProgress() {
-      if (this.progress < 100) {
-        this.progress += 25;
+
+      this.pourcentage = 100 / this.gameDataTest[this.myCategory].length;
+      // console.log(100 / this.gameDataTest[this.myCategory].length);
+      if (this.progress <= 100) {
+        this.progress += this.pourcentage;
       }
     },
 
-    continuegame() {
-      this.currentQuestion++;
-      this.message = "";
-      this.isSuccessVisible = false;
-      this.isFailVisible = false;
+    resetProgress() {
+      this.progress = 0;
     },
+
   },
 };
 </script>
