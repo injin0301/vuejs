@@ -1,0 +1,1 @@
+const QUESTIONS = "{category: 'basic', [question: 'How to say 'A boy' ?', answerOptions: ['Homme', 'Garçon', 'Fille'], solution: 'Garçon']";

@@ -20,11 +20,14 @@
 
     <div>
       <h2>Questions :</h2>
-      <p id="question">{{ gameDataTest[myCategory][0].question }}</p> <!-- => gameDataTest.basic (basic est la valeur de la variable myCategorie)-->
+      <p id="question">{{ gameDataTest[myCategory][index].question }}</p> <!-- => gameDataTest.basic (basic est la valeur de la variable myCategorie)-->
+
+      <!-- Aide -->
+      <p>Solution : {{ gameDataTest[myCategory][index].solution }}</p>
 
       <!-- Choix -->
       <div id="options">
-        <div id="optionbox" v-for="(answer, index) in gameDataTest[myCategory][0].answerOptions" >
+        <div id="optionbox" v-for="(answer, index) in gameDataTest[myCategory][index].answerOptions" >
           <button id="opbtn" v-bind:disabled="isSuccessVisible || isFailVisible" @click="checkAnswer(answer)">
             {{ answer }}
           </button>
@@ -32,25 +35,6 @@
       </div>
 
     </div>
-
-    <!-- <div>
-      <h2>Question :</h2>
-      <p id="question">{{ gameData[currentQuestion].question }}</p>
-      <div id="options">
-        <div
-          id="optionbox"
-          v-for="(answer, index) in gameData[currentQuestion].answerOptions"
-        >
-          <button
-            id="opbtn"
-            v-bind:disabled="isSuccessVisible || isFailVisible"
-            @click="checkAnswer(answer)"
-          >
-            {{ answer }}
-          </button>
-        </div>
-      </div>
-    </div> -->
 
     <div class="success" v-if="isSuccessVisible">
       <p>{{ message }}</p>
@@ -78,6 +62,7 @@ export default {
     return {
 
       myCategory : "basic", // Choix par défaut
+      index : 0,
 
       gameDataTest: 
         {
@@ -113,6 +98,11 @@ export default {
               question: "List begins at ...",
               answerOptions: ["0", "1", "the top"],
               solution: "0",
+            },
+            {
+              question: "Vue is the ?",
+              answerOptions: ["Worst", "Best", "Meh"],
+              solution: "Best",
             }
           ],
 
@@ -131,27 +121,76 @@ export default {
 
     onChange:function(){
        console.log(this.myCategory);
+       this.index = 0;
+    },
+
+    changeIndex(i) {
+      this.index = i;
+      console.log(i);
+      console.log(this.index);
     },
 
     checkAnswer(answer) {
-      if (this.gameDataTest[this.myCategory][0].solution == answer) {
+
+      // Question suivante
+      if(this.index + 1 < this.gameDataTest[this.myCategory].length && this.gameDataTest[this.myCategory][this.index].solution == answer) {
         this.message = "Great !";
         this.isSuccessVisible = true;
-        this.totalSuccess++;
-        // this.makeProgress();
-      } else {
+
+        // Attendre 1,5s
+        setTimeout(() => {
+          this.index++;
+          this.isSuccessVisible = false;
+          this.message = "";
+        }, 1500);
+
+      } else if(this.gameDataTest[this.myCategory][this.index].solution != answer) { // Si réponse fausse
         this.message = "Nope !";
         this.isFailVisible = true;
+      } else if(this.index + 1 >= this.gameDataTest[this.myCategory].length) { // Si dernière question
+        this.message = "Great !";
+        this.isSuccessVisible = true;
+        setTimeout(() => {
+          this.isSuccessVisible = false;
+          this.isFailVisible = false;
+          this.isEndGameVisible = true;
+          setTimeout(() => {
+            this.isEndGameVisible = false;
+            this.index = 0;
+          }, 2500);
+        }, 1500);
+
       }
 
-      console.log(this.gameDataTest[this.myCategory].length); // nombre de questions
-      console.log(this.gameDataTest[this.myCategory][index].length);
 
-      if (this.gameDataTest[this.myCategory] == this.gameDataTest[this.myCategory].length) {
-        this.isEndGameVisible = true;
-        this.isSuccessVisible = false;
-        this.isFailVisible = false;
+
+      // DEBUG
+      /*
+      console.log("index : " + this.index);
+
+      // console.log(this.gameDataTest[this.myCategory].length - this.index); // nombre de questions
+      if (this.index == 0) {
+        console.log("numéro de la question");
+        console.log(this.gameDataTest[this.myCategory].length - 1);
+      } else {
+        console.log("numéro de la question");
+        console.log(this.gameDataTest[this.myCategory].length - this.index + 1);
       }
+
+      console.log("question : " + this.gameDataTest[this.myCategory][this.index].question);
+
+      console.log("nombre de questions :");
+      console.log(this.gameDataTest[this.myCategory].length);
+      */
+      // DEBUG
+
+
+
+      // if (this.gameDataTest[this.myCategory].length - this.index + 1 == this.gameDataTest[this.myCategory].length) {
+      //   this.isEndGameVisible = true;
+      //   this.isSuccessVisible = false;
+      //   this.isFailVisible = false;
+      // }
     },
   
 
@@ -161,24 +200,6 @@ export default {
         this.progress += 25;
       }
     },
-
-    // checkAnswer(answer) {
-    //   if (this.gameData[this.currentQuestion].solution == answer) {
-    //     this.message = "Great !";
-    //     this.isSuccessVisible = true;
-    //     this.totalSuccess++;
-    //     this.makeProgress();
-    //   } else {
-    //     this.message = "Nope !";
-    //     this.isFailVisible = true;
-    //   }
-
-    //   if (this.currentQuestion >= this.gameData.length - 1) {
-    //     this.isEndGameVisible = true;
-    //     this.isSuccessVisible = false;
-    //     this.isFailVisible = false;
-    //   }
-    // },
 
     continuegame() {
       this.currentQuestion++;

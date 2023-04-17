@@ -5,6 +5,7 @@ import Menu from "../views/Menu.vue";
 import MatchingCard from "../views/MatchingCard";
 import WordCard from "../views/WordCard";
 import WordCardTest from "../views/WordCardTest";
+import WordCardEditor from "../views/WordCardEditor.vue"
 
 const routes = [
   {
@@ -36,6 +37,13 @@ const routes = [
     name: "word-card-test",
     component: WordCardTest,
   },
+
+  {
+    path: "/word-card-editor",
+    name: "word-card-editor",
+    component: WordCardEditor,
+  },
+
 ];
 
 const router = createRouter({
