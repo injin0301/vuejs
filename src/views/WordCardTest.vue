@@ -46,7 +46,8 @@
 
     <div class="endGame" v-if="isEndGameVisible">
       <p>
-        Your level is : {{ this.totalSuccess }}
+        <!-- Avant : this.totalSuccess -->
+        Your level is : {{ this.gameDataTest[this.myCategory].length }}
       </p>
     </div>
   </div>
@@ -148,15 +149,20 @@
             this.message = "";
           }, 1500);
 
-        } else if(this.gameDataTest[this.myCategory][this.index].solution != answer) { // Si réponse fausse
+        }
+        // Si réponse fausse
+        else if(this.gameDataTest[this.myCategory][this.index].solution != answer) {
           this.message = "Nope !";
           this.isFailVisible = true;
 
+          // Permet de retirer le bandeau de mauvaise réponse et de continuer
           setTimeout(() => {
             this.isFailVisible = false;
             this.message = "";
           }, 1500);
-        } else if(this.index + 1 >= this.gameDataTest[this.myCategory].length) { // Si dernière question
+        }
+        // Si dernière question
+        else if(this.index + 1 >= this.gameDataTest[this.myCategory].length) {
           this.message = "Great !";
           this.isSuccessVisible = true;
           this.makeProgress();
@@ -172,8 +178,6 @@
           }, 1500);
 
         }
-
-
 
         // DEBUG
         /*
