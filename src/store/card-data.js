@@ -6,12 +6,17 @@ import { defineStore } from 'pinia'
 // the first argument is a unique id of the store across your application
 export const useCardDataStore = defineStore('card-data', {
     state: () => ({ 
-
+      count: 0
     }),
     actions: {
         addQuestions(questions) {
           this.state = questions;
           console.log(this.state);
         },
+
+        // test() {
+        //   this.count = 1;
+        //   console.log(this.count);
+        // }
     },
 })
