@@ -47,6 +47,10 @@
 </script>
 
 <style scoped>
+
+    * {
+        font-family: "Shantell Sans", cursive;
+    }
     div {
         margin: 10px 10px;
         text-align: center;

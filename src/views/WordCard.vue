@@ -2,12 +2,14 @@
   <div>
     <h1>Learn French</h1>
 
-    <label for="category-select">Choose a category</label>
-    <select id="category-select">
+    <!-- Category selection -->
+    <label for="category-select" class="category-select">Choose a category :</label>
+    <select id="category-select" class="category-select" v-model="myCategory" @change="onChange()">
         <option value="basic">Basic</option>
         <option value="animals">Animals</option>
         <option value="development">Development</option>
     </select>
+
     <div class="shell">
       <div class="bar" :style="{ width: progress + '%' }">
         <span>
@@ -17,112 +19,204 @@
     </div>
 
     <div>
-      <h2>Question :</h2>
-      <p id="question">{{ gameData[currentQuestion].question }}</p>
+      <h2>Questions :</h2>
+      <p id="question">{{ gameDataTest[myCategory][index].question }}</p> <!-- => gameDataTest.basic (basic est la valeur de la variable myCategorie)-->
+
+      <!-- Aide -->
+      <!-- <p>Solution : {{ gameDataTest[myCategory][index].solution }}</p> -->
+
+      <!-- Choix -->
       <div id="options">
-        <div
-          id="optionbox"
-          v-for="(answer, index) in gameData[currentQuestion].answerOptions"
-        >
-          <button
-            id="opbtn"
-            v-bind:disabled="isSuccessVisible || isFailVisible"
-            @click="checkAnswer(answer)"
-          >
+        <div id="optionbox" v-for="(answer, index) in gameDataTest[myCategory][index].answerOptions" >
+          <button id="opbtn" v-bind:disabled="isSuccessVisible || isFailVisible" @click="checkAnswer(answer)">
             {{ answer }}
           </button>
         </div>
       </div>
+
     </div>
 
     <div class="success" v-if="isSuccessVisible">
       <p>{{ message }}</p>
-
-      <button @click="continuegame()">CONTINUE</button>
     </div>
 
     <div class="fail" v-if="isFailVisible">
       <p>{{ message }}</p>
-
-      <button @click="continuegame()">SKIP</button>
     </div>
 
     <div class="endGame" v-if="isEndGameVisible">
       <p>
-        Your level is : {{ this.totalSuccess + " of " + this.gameData.length }}
+        <!-- Avant : this.totalSuccess -->
+        Your level is : {{ this.gameDataTest[this.myCategory].length }}
       </p>
     </div>
   </div>
 </template>
 <script>
-export default {
-  name: "WordCardGame",
-  data() {
-    return {
-      gameData: [
-        {
-          question: "How to say 'A boy' ?",
-          answerOptions: ["Homme", "Garçon", "Fille"],
-          solution: "Garçon",
-        },
-        {
-          question: "How to say 'A girl' ?",
-          answerOptions: ["Fille", "Ordinateur", "Homme"],
-          solution: "Fille",
-        },
-        {
-          question: "How to say 'A car' ?",
-          answerOptions: ["Moto", "Voiture", "Avion"],
-          solution: "Voiture",
-        },
+  // import { useCardDataStore } from '../store/card-data.js';
 
-        {
-          question: "How to say 'A frog' ?",
-          answerOptions: ["Canard", "Grenouille", "Les nouilles"],
-          solution: "Grenouille",
-        },
-      ],
-      progress: 0,
-      currentQuestion: 0,
-      message: "",
-      isSuccessVisible: false,
-      isFailVisible: false,
-      isEndGameVisible: false,
-      totalSuccess: 0,
-    };
-  },
-  methods: {
-    makeProgress() {
-      if (this.progress < 100) {
-        this.progress += 25;
-      }
+  // const storeCardData = useCardDataStore();
+
+  export default {
+
+
+    name: "WordCardGame",
+    data() {
+      
+      return {
+
+        myCategory : "basic", // Choix par défaut
+        index : 0,
+
+        gameDataTest: 
+          {
+            
+            "basic" :  [
+              {
+                question: "How to say 'A boy' ?",
+                answerOptions: ["Homme", "Garçon", "Fille"],
+                solution: "Garçon",
+              },
+              {
+                question: "How to say 'A girl' ?",
+                answerOptions: ["Homme", "Garçon", "Fille"],
+                solution: "Fille",
+              }
+            ],
+
+            "animals" :  [
+              {
+                question: "How to say 'A cat' ?",
+                answerOptions: ["Chat", "Chien", "Zèbre"],
+                solution: "Chat",
+              }
+            ],
+
+            "development" :  [
+              {
+                question: "Hello ...",
+                answerOptions: ["There", "Guys", "World"],
+                solution: "World",
+              },
+              {
+                question: "List begins at ...",
+                answerOptions: ["0", "1", "the top"],
+                solution: "0",
+              },
+              {
+                question: "Vue is the ?",
+                answerOptions: ["Worst", "Best", "Meh"],
+                solution: "Best",
+              }
+            ],
+
+          },
+
+        progress: 0,
+        pourcentage: 0,
+        message: "",
+        isSuccessVisible: false,
+        isFailVisible: false,
+        isEndGameVisible: false,
+        totalSuccess: 0,
+        // cardDataStore: useCardDataStore(),
+      };
     },
+    methods: {
 
-    checkAnswer(answer) {
-      if (this.gameData[this.currentQuestion].solution == answer) {
-        this.message = "Great !";
-        this.isSuccessVisible = true;
-        this.totalSuccess++;
-        this.makeProgress();
-      } else {
-        this.message = "Nope !";
-        this.isFailVisible = true;
-      }
-
-      if (this.currentQuestion >= this.gameData.length - 1) {
-        this.isEndGameVisible = true;
+      onChange:function(){
+        console.log(this.myCategory);
+        this.index = 0;
+        this.resetProgress();
+        this.message = "";
         this.isSuccessVisible = false;
         this.isFailVisible = false;
-      }
-    },
+        this.isEndGameVisible = false;
+      },
 
-    continuegame() {
-      this.currentQuestion++;
-      this.message = "";
-      this.isSuccessVisible = false;
-      this.isFailVisible = false;
+      checkAnswer(answer) {
+
+        // Question suivante
+        if(this.index + 1 < this.gameDataTest[this.myCategory].length && this.gameDataTest[this.myCategory][this.index].solution == answer) {
+          this.message = "Great !";
+          this.isSuccessVisible = true;
+          this.makeProgress();
+
+          // Attendre 1,5s
+          setTimeout(() => {
+            this.index++;
+            this.isSuccessVisible = false;
+            this.message = "";
+          }, 1500);
+
+        }
+        // Si réponse fausse
+        else if(this.gameDataTest[this.myCategory][this.index].solution != answer) {
+          this.message = "Nope !";
+          this.isFailVisible = true;
+
+          // Permet de retirer le bandeau de mauvaise réponse et de continuer
+          setTimeout(() => {
+            this.isFailVisible = false;
+            this.message = "";
+          }, 1500);
+        }
+        // Si dernière question
+        else if(this.index + 1 >= this.gameDataTest[this.myCategory].length) {
+          this.message = "Great !";
+          this.isSuccessVisible = true;
+          this.makeProgress();
+          setTimeout(() => {
+            this.isSuccessVisible = false;
+            this.isFailVisible = false;
+            this.isEndGameVisible = true;
+            setTimeout(() => {
+              this.isEndGameVisible = false;
+              this.index = 0;
+              this.resetProgress();
+            }, 2500);
+          }, 1500);
+
+        }
+
+        // DEBUG
+        /*
+        console.log("index : " + this.index);
+
+        // console.log(this.gameDataTest[this.myCategory].length - this.index); // nombre de questions
+        if (this.index == 0) {
+          console.log("numéro de la question");
+          console.log(this.gameDataTest[this.myCategory].length - 1);
+        } else {
+          console.log("numéro de la question");
+          console.log(this.gameDataTest[this.myCategory].length - this.index + 1);
+        }
+
+        console.log("question : " + this.gameDataTest[this.myCategory][this.index].question);
+
+        console.log("nombre de questions :");
+        console.log(this.gameDataTest[this.myCategory].length);
+        */
+        // DEBUG
+
+      },
+    
+
+      // Ne progresse pas selon le nombre de questions
+      makeProgress() {
+
+        this.pourcentage = 100 / this.gameDataTest[this.myCategory].length;
+        // console.log(100 / this.gameDataTest[this.myCategory].length);
+        if (this.progress <= 100) {
+          this.progress += this.pourcentage;
+        }
+      },
+
+      resetProgress() {
+        this.progress = 0;
+      },
+
     },
-  },
 };
 </script>
 <style scoped>
@@ -283,6 +377,15 @@ h2 {
   font-family: "Shantell Sans", cursive;
   border-radius: 10px;
   color: #347632;
+}
+
+.category-select {
+  font-family: "Shantell Sans", cursive;
+  margin: 10px 10px;
+}
+
+#category-select {
+  background-color: #eee;
 }
 
 @media only screen and (max-width: 400px) {

@@ -20,10 +20,6 @@
         Memory word Card
       </button>
 
-      <button class="menuone" @click="$router.push('/word-card-test')">
-        Memory word Card Test
-      </button>
-
       <button class="menuone" @click="$router.push('/word-card-editor')">
         Create word card
       </button>
