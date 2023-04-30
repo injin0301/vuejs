@@ -151,6 +151,11 @@
         } else if(this.gameDataTest[this.myCategory][this.index].solution != answer) { // Si réponse fausse
           this.message = "Nope !";
           this.isFailVisible = true;
+
+          setTimeout(() => {
+            this.isFailVisible = false;
+            this.message = "";
+          }, 1500);
         } else if(this.index + 1 >= this.gameDataTest[this.myCategory].length) { // Si dernière question
           this.message = "Great !";
           this.isSuccessVisible = true;
