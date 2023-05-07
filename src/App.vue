@@ -12,9 +12,13 @@
 
   if (localStorage.length == 0) {
     console.log("LS vide");
-    storeCardData.addQuestions(QUESTIONS);
-    // console.log(QUESTIONS);
+    // storeCardData.addQuestions(QUESTIONS);
+    // console.log(storeCardData.state.basic);
+    // localStorage.setItem('questions', storeCardData)
+    // console.log(storeCardData);
     // console.log(storeCardData.state);
+
+    // localStorage.setItem()
   } else {
     console.log("LS non vide");
   }

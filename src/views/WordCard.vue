@@ -110,7 +110,7 @@
               }
             ],
 
-          },
+        },
 
         progress: 0,
         pourcentage: 0,
@@ -119,7 +119,6 @@
         isFailVisible: false,
         isEndGameVisible: false,
         totalSuccess: 0,
-        // cardDataStore: useCardDataStore(),
       };
     },
     methods: {

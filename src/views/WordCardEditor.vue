@@ -44,6 +44,12 @@
     import { useCardDataStore } from '@/store/card-data';
     const store = useCardDataStore()
 
+    // TEST
+    import { useQuestionsStore } from "@/store/card-data";
+    const teststore = useQuestionsStore()
+
+    teststore.setQuestions
+
 </script>
 
 <style scoped>

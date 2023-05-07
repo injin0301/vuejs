@@ -13,10 +13,28 @@ export const useCardDataStore = defineStore('card-data', {
           this.state = questions;
           console.log(this.state);
         },
-
-        // test() {
-        //   this.count = 1;
-        //   console.log(this.count);
-        // }
     },
+    getters: {
+      getCategories() {
+        return this.categories
+      }
+    }
+})
+
+export const useQuestionsStore = defineStore('card-test', {
+  id: 'questions',
+  state: () => ({
+    categories: JSON.parse(localStorage.getItem('categories')) || []
+  }),
+  actions: {
+    setQuestions(categories) {
+      this.categories = categories
+      localStorage.setItem('categories', JSON.stringify(categories))
+    }
+  },
+  getters: {
+    getCategories() {
+      return this.categories
+    }
+  }
 })
