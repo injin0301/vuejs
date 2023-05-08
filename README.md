@@ -60,16 +60,19 @@ Une barre de progression nous indique à quel pourcentage du nombre de questions
 Il est possible de changer de catégories de questions à n'importe quel moment, ce qui réinitialisera la barre de progression.</br>
 Un score s'affiche également à la fin des questions.
 
-### (A MODIFIER) Editeur de cartes :
+### Editeur de cartes :
 
-<img src="img5.jpeg">
+<img src="img10.jpeg">
 
 ### PWA :
 
-<img src="img5.png">
-l'application peut être indépendante en tant que logiciel de PWA. dans l'URL il y a une petite icône pour télécharger facilement cette application
+<img src="img5.png"></br>
 
-<img src="img6.png">
+
+l'application peut être indépendante en tant que logiciel de PWA. dans l'URL il y a une petite icône pour télécharger facilement cette application.</br></br>
+
+<img src="img6.png"></br>
+
 ici comme vous pouvez le voir l'application est indépendante en tant que logiciel
 
 ### Service Worker :
