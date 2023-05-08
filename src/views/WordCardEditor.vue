@@ -56,9 +56,26 @@
 
     * {
         font-family: "Shantell Sans", cursive;
+        margin: 10px;
     }
+    
     div {
         margin: 10px 10px;
         text-align: center;
+        margin: 10px 10px;
+        text-align: center;
+        margin-left: 200px;
+        max-width: 60rem;
+        min-width: 10rem;
+    }
+
+    h2 {
+        padding-bottom: 100px;
+    }
+
+    @media only screen and (max-width: 700px) {
+        div {
+            margin-left: 0;
+        }
     }
 </style>
